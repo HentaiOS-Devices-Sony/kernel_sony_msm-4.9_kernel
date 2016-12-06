@@ -93,10 +93,17 @@ ifeq ($(CONFIG_COMPAT_VDSO), y)
   endif
 endif
 
-KBUILD_CFLAGS	+= -mgeneral-regs-only $(lseinstr) $(vdso32)
+ifeq ($(CONFIG_ARM64), y)
+  brokengasinst := $(call as-instr,1:\n.inst 0\n.rept . - 1b\n\nnop\n.endr\n,,-DCONFIG_BROKEN_GAS_INST=1)
+  ifneq ($(brokengasinst),)
+    $(warning Detected assembler with broken .inst; disassembly will be unreliable)
+  endif
+endif
+
+KBUILD_CFLAGS	+= -mgeneral-regs-only $(lseinstr) $(brokengasinst) $(vdso32)
 KBUILD_CFLAGS	+= -fno-asynchronous-unwind-tables
 KBUILD_CFLAGS	+= -fno-pic
-KBUILD_AFLAGS	+= $(lseinstr)
+KBUILD_AFLAGS	+= $(lseinstr) $(brokengasinst)
 
 ifeq ($(cc-name),clang)
 KBUILD_CFLAGS	+= -DCONFIG_ARCH_SUPPORTS_INT128
