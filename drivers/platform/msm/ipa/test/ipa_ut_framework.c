@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2018, The Linux Foundation. All rights reserved.
+A/* Copyright (c) 2017-2018, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -862,7 +862,7 @@ static ssize_t ipa_ut_dbgfs_enable_write(struct file *file,
 
 	IPA_UT_DBG("Entry\n");
 
-	if (sizeof(lcl_buf) < count + 1) {
+	if (sizeof(lcl_buf) < count) {
 		IPA_UT_ERR("No enough space\n");
 		return -E2BIG;
 	}

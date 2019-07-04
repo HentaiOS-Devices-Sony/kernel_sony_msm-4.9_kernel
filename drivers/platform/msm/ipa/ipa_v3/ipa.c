@@ -4813,7 +4813,7 @@ static ssize_t ipa3_write(struct file *file, const char __user *buf,
 
 	char dbg_buff[32] = { 0 };
 
-	if (sizeof(dbg_buff) < count + 1)
+	if (sizeof(dbg_buff) < count)
 		return -EFAULT;
 
 	missing = copy_from_user(dbg_buff, buf, count);
@@ -6386,7 +6386,7 @@ static int ipa3_smp2p_probe(struct device *dev)
 		}
 
 		ipa3_ctx->smp2p_info.out_base_id = res;
-		IPADBG("smp2p out_base_id=%d\n",
+		IPADBG("smp2p out_base_id=%ld\n",
 			ipa3_ctx->smp2p_info.out_base_id);
 	} else if (strcmp("qcom,smp2pgpio_map_ipa_1_in", node->name) == 0) {
 		int irq;
