@@ -862,13 +862,15 @@ bool cfg80211_reg_can_beacon_relax(struct wiphy *wiphy,
 }
 EXPORT_SYMBOL(cfg80211_reg_can_beacon_relax);
 
+/*
+ * Always allow user to change channel, even if there is another normal
+ * virtual interface using the device.
+ */
 int cfg80211_set_monitor_channel(struct cfg80211_registered_device *rdev,
 				 struct cfg80211_chan_def *chandef)
 {
 	if (!rdev->ops->set_monitor_channel)
 		return -EOPNOTSUPP;
-	if (!cfg80211_has_monitors_only(rdev))
-		return -EBUSY;
 
 	return rdev_set_monitor_channel(rdev, chandef);
 }
