@@ -494,8 +494,36 @@ config THIN_ARCHIVES
 	  Select this if the architecture wants to use thin archives
 	  instead of ld -r to create the built-in.o files.
 
+choice
+	prompt "Kernel linker"
+	default LD_BFD
+	help
+	  This option allows the linker used for linking the kernel to be
+	  customized as desired out of a list of supported linkers.
+
+config LD_BFD
+	bool "bfd"
+	help
+	  Use the standard ld.bfd linker, which is the default and is part of
+	  GNU binutils.
+
+config LD_GOLD
+	bool "gold"
+	help
+	  Use the ld.gold linker, which is a part of GNU binutils. This may be
+	  desired for Clang LTO.
+
+config LD_LLD
+	bool "lld"
+	help
+	  Use the ld.lld linker, which is part of the LLVM project. This can be
+	  useful for Clang LTO as a replacement for ld.gold.
+
+endchoice
+
 config LD_DEAD_CODE_DATA_ELIMINATION
 	bool
+	select LD_GOLD
 	help
 	  Select this if the architecture wants to do dead code and
 	  data elimination with the linker by compiling with
@@ -536,6 +564,7 @@ config LTO_CLANG
 	select LTO
 	select THIN_ARCHIVES
 	select LD_DEAD_CODE_DATA_ELIMINATION
+	select LD_GOLD
 	help
           This option enables clang's Link Time Optimization (LTO), which allows
           the compiler to optimize the kernel globally at link time. If you
