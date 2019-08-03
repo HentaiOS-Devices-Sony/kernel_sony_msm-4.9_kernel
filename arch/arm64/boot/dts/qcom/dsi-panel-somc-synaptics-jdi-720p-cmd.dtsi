@@ -94,6 +94,9 @@
 		qcom,mdss-brightness-max-level = <255>;
 		qcom,mdss-dsi-bl-pmic-control-type = "bl_ctrl_wled";
 
+		qcom,ulps-enabled;
+		qcom,panel-allow-phy-poweroff;
+
 		somc,lcd-id = <0>;
 		somc,lcd-id-adc = <215000 256000>;
 		somc,pw-on-rst-seq = <0 10>, <1 16>, <0 7>, <1 16>;
